@@ -1,18 +1,29 @@
-import IClassRepository from "@modules/classes/domain/class/iclass-repository";
+import { inject, injectable } from "tsyringe";
 
-interface IListClassesByStudentInputDTO {
+import IClassRepository from "../../domain/class/iclass-repository";
+
+export interface IListClassesByStudentInputDTO {
   readonly studentId: number;
 }
 
-interface IListClassesByStudentOutputItemDTO {
+export interface IListClassesByStudentOutputItemDTO {
   readonly id: string;
   readonly startDate: Date;
   readonly vehicleId: number;
   readonly instructorId: number;
 }
 
+export interface IListClassesByStudentUseCase {
+  execute(
+    input: IListClassesByStudentInputDTO
+  ): Promise<IListClassesByStudentOutputItemDTO[]>;
+}
+
+@injectable()
 class ListClassesByStudentUseCase {
-  constructor(private readonly repository: IClassRepository) {}
+  constructor(
+    @inject("ClassRepository") private readonly repository: IClassRepository
+  ) {}
 
   async execute({
     studentId,
@@ -20,11 +31,11 @@ class ListClassesByStudentUseCase {
     IListClassesByStudentOutputItemDTO[]
   > {
     const classes = await this.repository.findAllClassesByStudentId(studentId);
-    return classes.map((aula) => ({
-      id: aula.id,
-      startDate: aula.startDate,
-      vehicleId: aula.vehicleId,
-      instructorId: aula.instructorId,
+    return classes.map((classs) => ({
+      id: classs.id,
+      startDate: classs.startDate,
+      vehicleId: classs.vehicleId,
+      instructorId: classs.instructorId,
     }));
   }
 }

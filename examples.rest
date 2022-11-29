@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:8080
+
+POST {{baseUrl}}/classes HTTP/1.1
+content-type: application/json
+
+{
+    "startDate": "2022-11-29T04:03:39.913Z'",
+    "vehicleId": 1,
+    "instructorId": 1,
+    "studentId": 10
+}
+
+####
+
+GET {{baseUrl}}/classes?studentId=10 HTTP/1.1

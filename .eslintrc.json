@@ -13,6 +13,7 @@
   },
   "plugins": ["@typescript-eslint", "eslint-plugin-import-helpers", "prettier"],
   "rules": {
+    "no-underscore-dangle": "off",
     "prettier/prettier": "error",
     "linebreak-style": "off",
     "camelcase": "off",

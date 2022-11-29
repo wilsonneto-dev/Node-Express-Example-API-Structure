@@ -1,26 +1,19 @@
 import { Router } from "express";
+import { container } from "tsyringe";
 
-import CreateClassUseCase from "../application/use-cases/create-class";
-import ListClassesByStudentUseCase from "../application/use-cases/list-classes-by-student";
-import ClassRepositoryInMemory from "../infra/class-repository-inmemory";
+import ClassesController from "./controllers/classes-controller";
 
-const router = Router();
+function getClassesRouter() {
+  const router = Router();
+  const classesController = container.resolve(ClassesController);
 
-const classRepository = new ClassRepositoryInMemory();
+  router
+    .post("/", async (req, res) => classesController.createClass(req, res))
+    .get("/", async (req, res) =>
+      classesController.listClassesByStudent(req, res)
+    );
 
-router.post("/classes", async (req, res) => {
-  const useCase = new CreateClassUseCase(classRepository);
-  const output = await useCase.execute(req.body);
-  res.status(201).json(output);
-});
+  return router;
+}
 
-router.get("/students/:studentId/classes", async (req, res) => {
-  const { studentId } = req.params as { studentId: string };
-  if (!studentId)
-    return res.status(400).json({ error: "studentId is required" }).end();
-  const useCase = new ListClassesByStudentUseCase(classRepository);
-  const output = await useCase.execute({ studentId: Number(studentId) });
-  return res.status(201).json(output);
-});
-
-export default router;
+export { getClassesRouter };

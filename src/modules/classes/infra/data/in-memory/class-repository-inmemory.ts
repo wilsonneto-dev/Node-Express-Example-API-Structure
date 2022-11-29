@@ -1,6 +1,9 @@
-import Class from "../domain/class/class";
-import IClassRepository from "../domain/class/iclass-repository";
+import { injectable } from "tsyringe";
 
+import Class from "../../../domain/class/class";
+import IClassRepository from "../../../domain/class/iclass-repository";
+
+@injectable()
 class ClassRepositoryInMemory implements IClassRepository {
   private classes: Class[] = [];
 

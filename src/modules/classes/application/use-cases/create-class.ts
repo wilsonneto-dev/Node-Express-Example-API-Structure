@@ -1,19 +1,28 @@
+import { inject, injectable } from "tsyringe";
+
 import Class from "../../domain/class/class";
 import IClassRepository from "../../domain/class/iclass-repository";
 
-interface ICreateClassInputDTO {
+export interface ICreateClassInputDTO {
   readonly startDate: Date;
   readonly vehicleId: number;
   readonly instructorId: number;
   studentId: number;
 }
 
-interface ICreateClassOutputDTO {
+export interface ICreateClassOutputDTO {
   readonly id: string;
 }
 
-class CreateClassUseCase {
-  constructor(private repository: IClassRepository) {}
+export interface ICreateClassUseCase {
+  execute(input: ICreateClassInputDTO): Promise<ICreateClassOutputDTO>;
+}
+
+@injectable()
+class CreateClassUseCase implements ICreateClassUseCase {
+  constructor(
+    @inject("ClassRepository") private repository: IClassRepository
+  ) {}
 
   async execute({
     startDate,
@@ -21,9 +30,9 @@ class CreateClassUseCase {
     instructorId,
     studentId,
   }: ICreateClassInputDTO): Promise<ICreateClassOutputDTO> {
-    const aula = new Class(startDate, vehicleId, studentId, instructorId);
-    this.repository.save(aula);
-    return { id: aula.id };
+    const classs = new Class(startDate, vehicleId, studentId, instructorId);
+    this.repository.save(classs);
+    return { id: classs.id };
   }
 }
 
