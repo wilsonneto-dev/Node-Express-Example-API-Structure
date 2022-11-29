@@ -25,7 +25,7 @@ class ClassesController {
     const output = await this.listClassesByStudentUseCase.execute({
       studentId: Number(studentId),
     });
-    return res.status(201).json(output);
+    return res.status(200).json(output);
   }
 }
 

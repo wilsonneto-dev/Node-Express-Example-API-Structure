@@ -13,11 +13,11 @@ const app = express();
 
 app.use(express.json());
 
-setupDataConnections().then(() => {
+const readyPromise = setupDataConnections().then(() => {
   app.use("/classes", getClassesRouter());
   app.listen(process.env.API_PORT ?? 8080, () =>
     console.log(`listenning on port ${process.env.API_PORT ?? 8080}...`)
   );
 });
 
-export default app;
+export { readyPromise, app };
